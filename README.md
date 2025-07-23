@@ -47,7 +47,7 @@ Siga os passos abaixo para configurar e executar o projeto:
 ### 1. Clone o Repositório
 Clone o repositório para o seu ambiente local:
 ```bash
-git clone <URL_DO_REPOSITORIO>
+git clone https://github.com/Wornax/desafio-devops.git
 cd desafio-devops
 
 2. Orquestração com Terraform
