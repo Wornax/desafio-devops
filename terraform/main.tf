@@ -96,6 +96,56 @@ resource "docker_container" "frontend" {
   restart    = "always"
 }
 
+resource "docker_image" "prometheus_image" {
+  name = "prom/prometheus:latest"
+}
+
+resource "docker_container" "prometheus" {
+  name  = "prometheus"
+  image = docker_image.prometheus_image.name
+  ports {
+    internal = 9090
+    external = 9090
+  }
+  volumes {
+    host_path      = "C:/Users/gabri/desafio-devops/monitoring/prometheus.yml"
+    container_path = "/etc/prometheus/prometheus.yml"
+  }
+  networks_advanced {
+    name = docker_network.app_network.name
+  }
+  restart = "always"
+}
+
+# Adicionando Grafana
+resource "docker_image" "grafana_image" {
+  name = "grafana/grafana:latest"
+}
+
+resource "docker_container" "grafana" {
+  name  = "grafana"
+  image = docker_image.grafana_image.name
+  ports {
+    internal = 3000
+    external = 3000
+  }
+  env = [
+    "GF_SECURITY_ADMIN_PASSWORD=admin"
+  ]
+  networks_advanced {
+    name = docker_network.app_network.name
+  }
+  restart = "always"
+}
+
 output "frontend_url" {
   value = "http://localhost:8080"
+}
+
+output "prometheus_url" {
+  value = "http://localhost:9090"
+}
+
+output "grafana_url" {
+  value = "http://localhost:3000"
 }
